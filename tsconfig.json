@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
+<<<<<<< HEAD
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
+=======
+>>>>>>> 64e4fb37503dfc62871c3ce41fe897d5ba6bfd9e
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
