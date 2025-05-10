@@ -1,10 +1,10 @@
-interface Ship {
+export interface Ship {
   hit: () => void;
   getLength: () => number;
   isSunk: () => boolean;
 }
 
-export const Ship = (length: number): Ship => {
+export const newShip = (length: number): Ship => {
   const _length = length;
   let _hits = 0;
 
