@@ -1,15 +1,12 @@
 import {
+  areCoordsEqual,
   CellState,
   newCell,
   type Cell,
   type CellStateType,
   type Ship,
 } from "@/core";
-
-export interface Coordinates {
-  x: number;
-  y: number;
-}
+import type { Coordinates } from "@/core";
 
 export interface Gameboard {
   placeShip: (ship: Ship, coords: Coordinates, isVertical: boolean) => void;
@@ -25,10 +22,6 @@ export interface PlacedShip {
   coords: Array<Coordinates>;
   isVertical: boolean;
 }
-
-const areCoordsEqual = (coords1: Coordinates, coords2: Coordinates) => {
-  return coords1.x === coords2.x && coords1.y === coords2.y;
-};
 
 export const newGameboard = (size: number = 10): Gameboard => {
   const _size = size;
