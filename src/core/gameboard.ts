@@ -11,7 +11,7 @@ export interface Coordinates {
   y: number;
 }
 
-interface Gameboard {
+export interface Gameboard {
   placeShip: (ship: Ship, coords: Coordinates, isVertical: boolean) => void;
   getCellState: (coords: Coordinates) => CellStateType;
   receiveAttack: (coords: Coordinates) => CellStateType;
