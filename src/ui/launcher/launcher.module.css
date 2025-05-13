@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--neutral-clr-900);
+}
+
+.launchGame {
+  padding: 2rem 3rem;
+  background-color: var(--primary-clr-500);
+  color: var(--secondary-clr-100);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 3rem;
+  font-family: var(--primary-font);
+  box-shadow: 0.5rem 0.5rem 1rem var(--neutral-clr-700);
+  transition: transform 0.2s ease-in-out;
+}
+
+.launchGame:hover {
+  transform: scale(1.05);
+}
+
+.hidden {
+  display: none;
+}
