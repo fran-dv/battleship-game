@@ -3,3 +3,4 @@ export * from "./game-sound/game-sound";
 export * from "./header/header";
 export * from "./home/home";
 export * from "./launcher/launcher";
+export * from "./views/views";
