@@ -4,9 +4,36 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>App name</title>
+    <title>Battleship</title>
   </head>
   <body>
+    <header>
+      <img
+        src="/src/assets/image/music-on.svg"
+        alt="Mute music"
+        title="Mute music"
+        aria-labelledby="Mute music"
+        data-click="toggle-background-music"
+      />
+      <img
+        src="/src/assets/image/fx-on.png"
+        class="png"
+        alt="Mute sound effects"
+        title="Mute sound effects"
+        aria-labelledby="Mute sound effects"
+        data-click="toggle-fx"
+      />
+      <a href="https://github.com/fran-dv/battleship-game" target="_blank">
+        <img
+          src="/src/assets/image/github.svg"
+          class="github"
+          alt="Github"
+          title="Github repository"
+          aria-labelledby="Github repository"
+        />
+      </a>
+    </header>
+    <main id="root"></main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
