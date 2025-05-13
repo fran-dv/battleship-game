@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
-@import "@/ui/global-styles/animations.module.css";
+@import "@/ui/animations/animations.module.css";
 
 * {
   margin: 0;

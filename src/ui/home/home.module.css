@@ -1,4 +1,4 @@
-@import "@/ui/global-styles/animations.module.css";
+@import "@/ui/animations/animations.module.css";
 
 .mainBackground {
   background: url("/src/assets/image/main-background.png") no-repeat center
