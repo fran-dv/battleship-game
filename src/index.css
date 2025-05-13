@@ -1,5 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+@import "@/ui/global-styles/animations.module.css";
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+:root {
+  --primary-font: "Jersey 10", sans-serif;
+
+  --primary-clr-50: rgb(224, 242, 241);
+  --primary-clr-100: rgb(178, 223, 219);
+  --primary-clr-200: rgb(128, 203, 196);
+  --primary-clr-300: rgb(77, 182, 172);
+  --primary-clr-400: rgb(38, 166, 154);
+  --primary-clr-500: rgb(0, 150, 136);
+  --primary-clr-600: rgb(0, 137, 123);
+  --primary-clr-700: rgb(0, 121, 107);
+  --primary-clr-800: rgb(0, 105, 92);
+  --primary-clr-900: rgb(0, 77, 64);
+
+  --secondary-clr-50: rgb(251, 239, 231);
+  --secondary-clr-100: rgb(247, 222, 199);
+  --secondary-clr-100-transparent: rgba(247, 222, 199, 0.3);
+  --secondary-clr-200: rgb(239, 199, 154);
+  --secondary-clr-300: rgb(231, 176, 108);
+  --secondary-clr-400: rgb(223, 154, 64);
+  --secondary-clr-500: rgb(214, 130, 24);
+  --secondary-clr-600: rgb(201, 111, 21);
+  --secondary-clr-700: rgb(184, 89, 17);
+  --secondary-clr-800: rgb(155, 75, 16);
+  --secondary-clr-900: rgb(123, 58, 13);
+
+  --accent-clr-50: rgb(253, 224, 224);
+  --accent-clr-100: rgb(249, 179, 179);
+  --accent-clr-200: rgb(246, 128, 128);
+  --accent-clr-300: rgb(242, 77, 77);
+  --accent-clr-400: rgb(239, 36, 36);
+  --accent-clr-500: rgb(236, 0, 0);
+  --accent-clr-600: rgb(210, 0, 0);
+  --accent-clr-700: rgb(180, 0, 0);
+  --accent-clr-800: rgb(150, 0, 0);
+  --accent-clr-900: rgb(105, 0, 0);
+
+  --neutral-clr-50: rgb(236, 239, 241);
+  --neutral-clr-100: rgb(207, 216, 220);
+  --neutral-clr-200: rgb(176, 191, 197);
+  --neutral-clr-300: rgb(144, 164, 174);
+  --neutral-clr-400: rgb(120, 144, 156);
+  --neutral-clr-500: rgb(96, 125, 139);
+  --neutral-clr-600: rgb(84, 110, 122);
+  --neutral-clr-700: rgb(69, 90, 100);
+  --neutral-clr-800: rgb(55, 71, 79);
+  --neutral-clr-900: rgb(38, 50, 56);
+}
+
+header {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 1rem;
+  height: 5rem;
+  padding: 1.5rem 2.5rem 0 2.5rem;
+  background-color: var(--secondary-clr-100-transparent);
+  animation: fadeIn 3.5s ease-in-out;
+}
+
+.header-wrapper {
+  background-color: var(--secondary-clr-100-transparent);
+  animation: fadeIn 3s ease-in-out;
+}
+
+header a {
+  text-decoration: none;
+}
+
+header img {
+  width: 2rem;
+  cursor: pointer;
+}
+
+.png {
+  width: 3rem;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.github {
+  width: 2.5rem;
 }
