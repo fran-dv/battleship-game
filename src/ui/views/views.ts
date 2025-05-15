@@ -1,15 +1,32 @@
-import type { HomeHandlers, LauncherHandlers } from "@/ui";
-import { renderHomeView } from "@/ui";
-import { renderLauncherView } from "@/ui";
+import type { GameSession } from "@/core";
+import type {
+  GameSessionView,
+  HomeHandlers,
+  LauncherHandlers,
+  ShipPlacementView,
+} from "@/ui";
+import {
+  renderGameSessionView,
+  renderHomeView,
+  renderLauncherView,
+  renderShipPlacementView,
+} from "@/ui";
 
-interface ViewHandlers {
+export interface ViewHandlers {
   loadLauncherView: () => void;
   loadHomeView: () => void;
-  clickOnOnePlayerButton: () => void;
-  clickOnTwoPlayersButton: () => void;
+  clickOnOnePlayerButton: (gameSession: GameSession) => void;
+  clickOnTwoPlayersButton: (gameSession: GameSession) => void;
+  loadGameSessionView: (parent: HTMLElement, gameSession: GameSession) => void;
 }
 
-type ViewType = LauncherHandlers | HomeHandlers;
+type ViewType =
+  | LauncherHandlers
+  | HomeHandlers
+  | GameSessionView
+  | ShipPlacementView;
+
+export const transitionsDelay = 2000;
 
 export const initViews = (parent: HTMLElement): ViewHandlers => {
   let currentView: ViewType = renderLauncherView(parent);
@@ -20,21 +37,44 @@ export const initViews = (parent: HTMLElement): ViewHandlers => {
   };
   const loadHomeView = () => {
     currentView.destroy();
-    currentView = renderHomeView(parent);
+    currentView = renderHomeView(parent, transitionsDelay);
   };
-  const clickOnOnePlayerButton = () => {
-    if (!("clickOnOnePlayerButton" in currentView)) {
-      console.error("clickOnOnePlayerButton not found in current view");
+
+  const loadGameSessionView = (
+    parent: HTMLElement,
+    gameSession: GameSession,
+  ) => {
+    currentView.destroy();
+    currentView = renderGameSessionView(parent, gameSession, transitionsDelay);
+  };
+
+  const clickOnOnePlayerButton = (gameSession: GameSession) => {
+    if (!("clickOnButton" in currentView)) {
+      console.error("clickOnButton not found in current view");
       return;
     }
-    (currentView as HomeHandlers).clickOnOnePlayerButton();
+    (currentView as HomeHandlers).clickOnButton();
+    currentView.destroy();
+    currentView = renderShipPlacementView(
+      parent,
+      gameSession.getPlayers()[0],
+      null,
+      transitionsDelay,
+    );
   };
-  const clickOnTwoPlayersButton = () => {
-    if (!("clickOnTwoPlayersButton" in currentView)) {
-      console.error("clickOnTwoPlayersButton not found in current view");
+  const clickOnTwoPlayersButton = (gameSession: GameSession) => {
+    if (!("clickOnButton" in currentView)) {
+      console.error("clickOnButton not found in current view");
       return;
     }
-    (currentView as HomeHandlers).clickOnTwoPlayersButton();
+    (currentView as HomeHandlers).clickOnButton();
+    currentView.destroy();
+    currentView = renderShipPlacementView(
+      parent,
+      gameSession.getPlayers()[0],
+      gameSession.getPlayers()[1],
+      transitionsDelay,
+    );
   };
 
   return {
@@ -42,5 +82,6 @@ export const initViews = (parent: HTMLElement): ViewHandlers => {
     loadHomeView,
     clickOnOnePlayerButton,
     clickOnTwoPlayersButton,
+    loadGameSessionView,
   };
 };
