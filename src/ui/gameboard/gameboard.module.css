@@ -1,0 +1,48 @@
+.gameboard {
+  aspect-ratio: 1;
+  width: 100%;
+  height: auto;
+  flex: 1;
+  --max-size: var(--max-board-size);
+  --min-size: var(--min-board-size);
+  max-width: var(--max-size);
+  max-height: var(--max-size);
+  min-width: var(--min-size);
+  min-height: var(--min-size);
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  background-color: var(--primary-clr-300);
+  background-image: url("/src/assets/image/gameboard-bg.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border-radius: 0.5rem;
+  border: 0.5px solid var(--neutral-clr-500);
+  box-shadow: 0.5rem 0.5rem 1rem var(--neutral-clr-900);
+}
+
+.cell {
+  min-width: 1.5rem;
+  aspect-ratio: 1;
+  display: flex;
+  flex: 1;
+  height: auto;
+  border: 0.5px solid var(--neutral-clr-500);
+}
+
+.cornerTopLeft {
+  border-radius: 0.5rem 0 0 0;
+}
+
+.cornerTopRight {
+  border-radius: 0 0.5rem 0 0;
+}
+
+.cornerBottomLeft {
+  border-radius: 0 0 0 0.5rem;
+}
+
+.cornerBottomRight {
+  border-radius: 0 0 0.5rem 0;
+}
