@@ -4,4 +4,5 @@ export * from "./gameboard/gameboard";
 export * from "./home/home";
 export * from "./footer";
 export * from "./launcher/launcher";
+export * from "./ship-placement/ship-placement";
 export * from "./views/views";

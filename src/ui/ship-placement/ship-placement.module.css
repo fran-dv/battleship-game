@@ -1,0 +1,51 @@
+@import "/src/ui/animations/animations.module.css";
+
+.parent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.title {
+  position: absolute;
+  /* top: calc(var(--header-height) + 1rem); */
+  top: 0;
+  font-family: var(--primary-font);
+  font-size: 2.5rem;
+  color: var(--primary-clr-50);
+  padding: 0.5rem;
+}
+
+.nextButton {
+  margin-left: 2rem;
+  bottom: calc(var(--header-height) + 1rem);
+  font-family: var(--primary-font);
+  font-size: 2rem;
+  padding: 1rem 2rem;
+  transition: transform 0.2s ease-in-out;
+  box-shadow: 0.5rem 0.5rem 1rem var(--neutral-clr-700);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (width <= 769px) {
+    position: absolute;
+    bottom: 0;
+    margin: 2rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.5rem;
+  }
+}
+
+.nextButton::after {
+  content: "\2192";
+  margin-left: 0.5rem;
+}
+
+.nextButton:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
