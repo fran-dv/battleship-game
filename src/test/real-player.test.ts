@@ -11,17 +11,6 @@ test("get gameboard", () => {
   expectTypeOf(player.getGameboard()).toEqualTypeOf<Gameboard>();
 });
 
-test("is turn", () => {
-  const player = newPlayer("Player");
-  expect(player.isTurn()).toBe(false);
-});
-
-test("set turn", () => {
-  const player = newPlayer("Player");
-  player.setTurn(true);
-  expect(player.isTurn()).toBe(true);
-});
-
 test("place ship", () => {
   const player = newPlayer("Player");
   const coords = { x: 0, y: 0 };
@@ -48,8 +37,16 @@ test("receive attack and sink a ship", () => {
   expect(player.receiveAttack(coords)).toBe(CellState.sunk);
 });
 
-test("receive attack and miss", () => {
-  const player = newPlayer("Player");
-  const coords = { x: 0, y: 0 };
-  expect(player.receiveAttack(coords)).toBe(CellState.miss);
+test("id is different each time", () => {
+  const player1 = newPlayer("Player");
+  const player2 = newPlayer("Player");
+  const player3 = newPlayer("Player");
+  expect(player1.getId()).not.toBe(player2.getId());
+  expect(player1.getId()).not.toBe(player3.getId());
+  expect(player2.getId()).not.toBe(player3.getId());
+});
+
+test("random ships placement", () => {
+  const player = newPlayer("Enemy");
+  expect(player.getGameboard().getRemainingShips()).toBe(5);
 });
