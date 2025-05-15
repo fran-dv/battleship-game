@@ -8,17 +8,17 @@ export interface LauncherHandlers {
   destroy: () => void;
 }
 
-const hideHeader = () => {
-  document.querySelector("header")?.classList.add(styles.hidden);
+const hideFooter = () => {
+  document.querySelector("footer")?.classList.add(styles.hidden);
 };
 
-const showHeader = () => {
-  document.querySelector("header")?.classList.remove(styles.hidden);
+const showFooter = () => {
+  document.querySelector("footer")?.classList.remove(styles.hidden);
 };
 
 export const renderLauncherView = (parent: HTMLElement): LauncherHandlers => {
   console.log("renderLauncherView");
-  hideHeader();
+  hideFooter();
 
   const container = generateDiv({ classes: [styles.container] });
   const launchGameButton = document.createElement("button");
@@ -30,7 +30,7 @@ export const renderLauncherView = (parent: HTMLElement): LauncherHandlers => {
 
   const destroy = () => {
     parent.removeChild(container);
-    showHeader();
+    showFooter();
   };
   const clickOnLaunchGameButton = () => {
     destroy();

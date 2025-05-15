@@ -2,8 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: var(--neutral-clr-900);
+  height: 100dvh;
 }
 
 .launchGame {
