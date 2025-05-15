@@ -7,7 +7,9 @@ import {
   type Player,
 } from "@/core";
 
-interface ComputerPlayer extends Player {
+export const computerPlayerId = 100;
+
+export interface ComputerPlayer extends Player {
   attackToEnemy: () => AttackInfo | Error;
 }
 
@@ -18,12 +20,15 @@ export interface AttackInfo {
 
 export const newComputerPlayer = (
   enemy: Player,
-  name: string = "Captain Ironskulls",
+  name: string = "Computer",
 ): ComputerPlayer => {
+  const _id = computerPlayerId;
   const _name = name;
   const _player = newPlayer(_name);
   const _enemy = enemy;
   const _gameboard = _player.getGameboard();
+
+  const getId = () => _id;
 
   let _previousAttacks: Array<AttackInfo> = [];
 
@@ -162,6 +167,7 @@ export const newComputerPlayer = (
 
   return {
     ..._player,
+    getId,
     attackToEnemy,
   };
 };

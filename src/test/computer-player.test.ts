@@ -17,6 +17,8 @@ test("make an attack to the enemy", () => {
 
 test("attack adjacent cells if a ship have been hit", () => {
   const enemy = newPlayer("Enemy");
+  enemy.removeAllPlacedShips();
+  expect(enemy.getRemainingShips()).toBe(0);
   enemy.placeShip(newShip(2), { x: 0, y: 0 }, false);
   const computerPlayer = newComputerPlayer(enemy);
 
