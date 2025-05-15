@@ -1,9 +1,18 @@
 @import "@/ui/animations/animations.module.css";
 
+.parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--secondary-clr-100-transparent);
+}
+
 .mainBackground {
   background: url("/src/assets/image/main-background.png") no-repeat center
     center/cover;
-  animation: fadeIn 3s ease-in-out;
 
   @media (width <= 640px) {
     background-image: url("/src/assets/image/main-background.png");
@@ -17,16 +26,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: var(--secondary-clr-100-transparent);
+  height: 100%;
   padding: 2rem;
-  animation: fadeIn 3.5s ease-in-out;
+  opacity: 1;
 }
 
-.header {
-  display: flex;
-  justify-content: end;
-  align-items: center;
+.footer {
+  background-color: var(--secondary-clr-100-transparent);
 }
 
 .battleshipLogoSection {
@@ -56,8 +62,8 @@
   gap: 5rem 2rem;
   margin-bottom: 15rem;
 
-  @media (width <= 769px) {
-    margin-bottom: 5rem;
+  @media (width <= 800px) {
+    margin-bottom: 3rem;
   }
 }
 
