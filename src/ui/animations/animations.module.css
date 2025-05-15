@@ -42,10 +42,11 @@
 }
 
 .fadeIn {
-  animation: fadeIn 3s ease-in-out;
+  animation: fadeIn 2s ease-in;
 }
 .fadeOut {
-  animation: fadeOut 3s ease-in-out;
+  animation: fadeOut 2s ease-out;
+  opacity: 0;
 }
 .float {
   animation: float 3s ease-in-out infinite;
