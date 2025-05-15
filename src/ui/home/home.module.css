@@ -6,7 +6,8 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background-color: var(--secondary-clr-100-transparent);
 }
 
@@ -45,10 +46,13 @@
 .battleshipLogo {
   width: 30rem;
   animation: float 3s ease-in-out infinite;
+  @media (width <= 800px) {
+    width: 75%;
+  }
   @media (width <= 640px) {
     width: 90%;
   }
-  @media (width <= 500px) {
+  @media (width <= 400px) {
     width: 100vw;
   }
 }
@@ -64,6 +68,7 @@
 
   @media (width <= 800px) {
     margin-bottom: 3rem;
+    gap: 2rem;
   }
 }
 
@@ -80,6 +85,16 @@
   font-family: var(--primary-font);
   transition: transform 0.2s ease-in-out;
   animation: expand 2s ease-in-out infinite;
+  @media (width <= 800px) {
+    width: 13rem;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+  }
+  @media (width <= 640px) {
+    width: 10rem;
+    padding: 1rem 1.5rem;
+    font-size: 1.25rem;
+  }
 }
 
 .homeButton:hover {
