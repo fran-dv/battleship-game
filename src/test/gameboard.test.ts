@@ -55,3 +55,13 @@ test("check if all ships are sunk", () => {
   gameboard.receiveAttack({ x: 1, y: 0 });
   expect(gameboard.areAllShipsSunk()).toBe(true);
 });
+
+test("get remaining ships", () => {
+  const gameboard = newGameboard();
+  const ship = newShip(2);
+  gameboard.placeShip(ship, { x: 0, y: 0 }, false);
+  expect(gameboard.getRemainingShips()).toBe(1);
+  gameboard.receiveAttack({ x: 0, y: 0 });
+  gameboard.receiveAttack({ x: 1, y: 0 });
+  expect(gameboard.getRemainingShips()).toBe(0);
+});
