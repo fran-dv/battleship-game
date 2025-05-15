@@ -3,21 +3,22 @@ import musicOn from "@/assets/image/music-on.svg";
 import musicOff from "@/assets/image/music-off.svg";
 import fxOn from "@/assets/image/fx-on.png";
 import fxOff from "@/assets/image/fx-off.png";
-import { DataClickAttrs } from "@/ui";
+import { DataClickAttrs, IDS } from "@/ui";
 
-const headerElement = document.querySelector("header");
-const headerElementOrError = headerElement
-  ? headerElement
-  : new Error("Header element was not found");
+const footerElement = document.querySelector("footer");
+const footerElementOrError = footerElement
+  ? footerElement
+  : new Error("Footer element was not found");
 
-interface HeaderHandler {
+interface FooterHandler {
   clickOnMuteMusic: () => void;
   clickOnMuteFx: () => void;
+  setMessage: (message: string) => void;
 }
 
-export const Header = ((
+export const Footer = ((
   container: HTMLElement | Error,
-): HeaderHandler | null => {
+): FooterHandler | null => {
   if (container instanceof Error) {
     console.error(container.message);
     return null;
@@ -44,8 +45,19 @@ export const Header = ((
     fxButton.src = currentFxState ? fxOn : fxOff;
   };
 
+  const setMessage = (message: string) => {
+    const msgContainer = document.querySelector(`#${IDS.Messages}`);
+    if (!msgContainer) {
+      console.error("Messages display element was not found");
+      return;
+    }
+
+    msgContainer.textContent = message;
+  };
+
   return {
     clickOnMuteMusic,
     clickOnMuteFx,
+    setMessage,
   };
-})(headerElementOrError);
+})(footerElementOrError);

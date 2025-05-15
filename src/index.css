@@ -54,31 +54,72 @@
   --neutral-clr-700: rgb(69, 90, 100);
   --neutral-clr-800: rgb(55, 71, 79);
   --neutral-clr-900: rgb(38, 50, 56);
+
+  --header-height: 9dvh;
+  --min-board-size: 330px;
+  --max-board-size: 700px;
 }
 
-header {
+body {
+  background-color: var(--neutral-clr-900);
+  min-width: 100dvw;
+  min-height: 100dvh;
+  background: url("/src/assets/image/main-background.png") no-repeat center
+    center/cover;
+
+  @media (width <= 640px) {
+    background-image: url("/src/assets/image/main-background.png");
+    background-position: 40% 50%;
+    background-repeat: no-repeat;
+  }
+}
+
+main {
+  width: 100%;
+  height: calc(100dvh - var(--header-height));
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+footer {
+  width: 100%;
   display: flex;
   justify-content: end;
   align-items: center;
   gap: 1rem;
-  height: 5rem;
-  padding: 1.5rem 2.5rem 0 2.5rem;
-  background-color: var(--secondary-clr-100-transparent);
-  animation: fadeIn 3.5s ease-in-out;
+  height: var(--header-height);
+  padding: 0.75rem;
+  position: fixed;
+  bottom: 0;
+  right: 0;
 }
 
 .header-wrapper {
   background-color: var(--secondary-clr-100-transparent);
-  animation: fadeIn 3s ease-in-out;
 }
 
-header a {
+footer a {
   text-decoration: none;
 }
 
-header img {
+footer img {
   width: 2rem;
   cursor: pointer;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(25%) saturate(4613%)
+    hue-rotate(175deg) brightness(111%) contrast(90%);
+}
+
+footer #game-messages {
+  font-size: 2.5rem;
+  margin-right: auto;
+  margin-left: 0.5rem;
+  font-family: var(--primary-font);
+  line-height: 1;
+  color: var(--primary-clr-50);
+
+  @media (width <= 460px) {
+    font-size: 1.75rem;
+  }
 }
 
 .png {
