@@ -10,6 +10,11 @@ import type { Coordinates, ShipType } from "@/core";
 import { GameRules } from "./game-rules";
 
 export interface Gameboard {
+  isValidPlaceForShip: (
+    shipLength: number,
+    coords: Coordinates,
+    isVertical: boolean,
+  ) => boolean;
   placeShip: (
     ship: Ship,
     coords: Coordinates,
@@ -52,13 +57,13 @@ export const newGameboard = (size: number = GameRules.boardSize): Gameboard => {
 
   const getSize = () => _size;
 
-  const _isValidPlaceForShip = (
-    ship: Ship,
+  const isValidPlaceForShip = (
+    shipLength: number,
     coords: Coordinates,
     isVertical: boolean,
   ): boolean => {
     const { x, y } = coords;
-    for (let i = 0; i < ship.getLength(); i++) {
+    for (let i = 0; i < shipLength; i++) {
       const newX = isVertical ? x : x + i;
       const newY = isVertical ? y + i : y;
       if (newX < 0 || newX >= _size || newY < 0 || newY >= _size) {
@@ -77,7 +82,7 @@ export const newGameboard = (size: number = GameRules.boardSize): Gameboard => {
     isVertical: boolean,
     type: ShipType,
   ): boolean => {
-    if (!_isValidPlaceForShip(ship, { x, y }, isVertical)) {
+    if (!isValidPlaceForShip(ship.getLength(), { x, y }, isVertical)) {
       return false;
     }
     const shipCellsCords: Array<Coordinates> = [];
@@ -170,6 +175,7 @@ export const newGameboard = (size: number = GameRules.boardSize): Gameboard => {
 
   return {
     getSize,
+    isValidPlaceForShip,
     placeShip,
     getCellState,
     receiveAttack,
