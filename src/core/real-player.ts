@@ -18,7 +18,7 @@ export interface Player {
     ship: Ship,
     coords: Coordinates,
     isVertical: boolean,
-    type: ShipType
+    type: ShipType,
   ) => boolean;
   areAllShipsSunk: () => boolean;
   getRemainingShips: () => number;
@@ -43,7 +43,7 @@ export const newPlayer = (name: string): Player => {
     ship: Ship,
     coords: Coordinates,
     isVertical: boolean,
-    type: ShipType
+    type: ShipType,
   ): boolean => {
     return _gameboard.placeShip(ship, coords, isVertical, type);
   };
@@ -66,7 +66,7 @@ export const newPlayer = (name: string): Player => {
         newShip(ship.size),
         randomCoords[0],
         vertical,
-        ship.type
+        ship.type,
       );
     }
     vertical = !vertical;

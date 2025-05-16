@@ -5,8 +5,8 @@ export interface Ship {
 }
 
 export const newShip = (length: number): Ship => {
-  const _length = length;
   let _hits = 0;
+  const _length = length;
 
   const isSunk = () => _hits === _length;
 
