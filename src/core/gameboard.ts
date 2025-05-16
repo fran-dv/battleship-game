@@ -72,6 +72,10 @@ export const newGameboard = (size: number = GameRules.boardSize): Gameboard => {
       if (_board[newX][newY].getState() !== CellState.empty) {
         return false;
       }
+      const existingShip = getShipByCoords({ x: newX, y: newY });
+      if (existingShip) {
+        return false;
+      }
     }
     return true;
   };
