@@ -6,11 +6,16 @@ import {
   type CellStateType,
   type Ship,
 } from "@/core";
-import type { Coordinates } from "@/core";
+import type { Coordinates, ShipType } from "@/core";
 import { GameRules } from "./game-rules";
 
 export interface Gameboard {
-  placeShip: (ship: Ship, coords: Coordinates, isVertical: boolean) => boolean;
+  placeShip: (
+    ship: Ship,
+    coords: Coordinates,
+    isVertical: boolean,
+    type: ShipType,
+  ) => boolean;
   getCellState: (coords: Coordinates) => CellStateType;
   receiveAttack: (coords: Coordinates) => CellStateType;
   getShipByCoords: (coords: Coordinates) => PlacedShip | null;
@@ -19,12 +24,14 @@ export interface Gameboard {
   getRemainingShips: () => number;
   removePlacedShip: (coords: Coordinates) => boolean;
   removeAllPlacedShips: () => void;
+  getAllPlacedShips: () => Array<PlacedShip>;
 }
 
 export interface PlacedShip {
   ship: Ship;
   coords: Array<Coordinates>;
   isVertical: boolean;
+  type: ShipType;
 }
 
 export const newGameboard = (size: number = GameRules.boardSize): Gameboard => {
@@ -68,6 +75,7 @@ export const newGameboard = (size: number = GameRules.boardSize): Gameboard => {
     ship: Ship,
     { x, y }: Coordinates,
     isVertical: boolean,
+    type: ShipType,
   ): boolean => {
     if (!_isValidPlaceForShip(ship, { x, y }, isVertical)) {
       return false;
@@ -80,7 +88,7 @@ export const newGameboard = (size: number = GameRules.boardSize): Gameboard => {
       followedCell.setState(CellState.ship as CellStateType);
       shipCellsCords.push({ x: newX, y: newY });
     }
-    _placedShips.push({ ship, coords: shipCellsCords, isVertical });
+    _placedShips.push({ ship, coords: shipCellsCords, isVertical, type });
     return true;
   };
 
@@ -156,6 +164,10 @@ export const newGameboard = (size: number = GameRules.boardSize): Gameboard => {
     }
   };
 
+  const getAllPlacedShips = (): Array<PlacedShip> => {
+    return _placedShips;
+  };
+
   return {
     getSize,
     placeShip,
@@ -166,5 +178,6 @@ export const newGameboard = (size: number = GameRules.boardSize): Gameboard => {
     getRemainingShips,
     removePlacedShip,
     removeAllPlacedShips,
+    getAllPlacedShips,
   };
 };

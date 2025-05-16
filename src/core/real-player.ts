@@ -1,4 +1,11 @@
-import type { CellStateType, Coordinates, Gameboard, Ship } from "@/core";
+import type {
+  CellStateType,
+  Coordinates,
+  Gameboard,
+  PlacedShip,
+  Ship,
+  ShipType,
+} from "@/core";
 import { GameRules, getRandomCoords, newGameboard, newShip } from "@/core";
 import { getUniqueId } from "@/utilities";
 
@@ -7,11 +14,17 @@ export interface Player {
   getName: () => string;
   getGameboard: () => Gameboard;
   receiveAttack: (coords: Coordinates) => CellStateType;
-  placeShip: (ship: Ship, coords: Coordinates, isVertical: boolean) => boolean;
+  placeShip: (
+    ship: Ship,
+    coords: Coordinates,
+    isVertical: boolean,
+    type: ShipType,
+  ) => boolean;
   areAllShipsSunk: () => boolean;
   getRemainingShips: () => number;
   removePlacedShip: (coords: Coordinates) => void;
   removeAllPlacedShips: () => void;
+  getAllPlacedShips: () => Array<PlacedShip>;
 }
 
 export const newPlayer = (name: string): Player => {
@@ -30,8 +43,9 @@ export const newPlayer = (name: string): Player => {
     ship: Ship,
     coords: Coordinates,
     isVertical: boolean,
+    type: ShipType,
   ): boolean => {
-    return _gameboard.placeShip(ship, coords, isVertical);
+    return _gameboard.placeShip(ship, coords, isVertical, type);
   };
 
   const areAllShipsSunk = (): boolean => {
@@ -48,7 +62,12 @@ export const newPlayer = (name: string): Player => {
     let success: boolean = false;
     while (!success) {
       const randomCoords = getRandomCoords(1, _gameboard.getSize());
-      success = placeShip(newShip(ship.size), randomCoords[0], vertical);
+      success = placeShip(
+        newShip(ship.size),
+        randomCoords[0],
+        vertical,
+        ship.type,
+      );
     }
     vertical = !vertical;
   });
@@ -61,6 +80,10 @@ export const newPlayer = (name: string): Player => {
     _gameboard.removeAllPlacedShips();
   };
 
+  const getAllPlacedShips = (): Array<PlacedShip> => {
+    return _gameboard.getAllPlacedShips();
+  };
+
   return {
     getId,
     getName,
@@ -71,5 +94,6 @@ export const newPlayer = (name: string): Player => {
     getRemainingShips,
     removePlacedShip,
     removeAllPlacedShips,
+    getAllPlacedShips,
   };
 };
