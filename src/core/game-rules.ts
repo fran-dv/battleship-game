@@ -4,7 +4,33 @@ import cruiserImage from "@/assets/image/ships/cruiser-ship-horizontal.png";
 import destroyerImage from "@/assets/image/ships/destroyer-ship-horizontal.png";
 import patrolBoatImage from "@/assets/image/ships/patrol-boat-ship-horizontal.png";
 
-export const GameRules = {
+export type ShipType =
+  | "carrier"
+  | "battleship"
+  | "cruiser"
+  | "destroyer"
+  | "patrol-boat";
+type GameMode = "single-player" | "multiplayer";
+
+interface ShipData {
+  size: number;
+  name: string;
+  imageUrl: string;
+  type: ShipType;
+}
+
+interface Rules {
+  boardSize: number;
+  numberOfPlayers: number;
+  gameModes: {
+    singlePlayer: GameMode;
+    multiPlayer: GameMode;
+  };
+  numberOfShips: number;
+  ships: Array<ShipData>;
+}
+
+export const GameRules: Rules = {
   boardSize: 10,
   numberOfPlayers: 2,
   gameModes: {
@@ -17,31 +43,31 @@ export const GameRules = {
       size: 5,
       name: "Carrier",
       imageUrl: carrierImage,
-      className: "carrier",
+      type: "carrier",
     },
     {
       size: 4,
       name: "Battleship",
       imageUrl: battleshipImage,
-      className: "battleship",
+      type: "battleship",
     },
     {
       size: 3,
       name: "Cruiser",
       imageUrl: cruiserImage,
-      className: "cruiser",
+      type: "cruiser",
     },
     {
       size: 3,
       name: "Destroyer",
       imageUrl: destroyerImage,
-      className: "destroyer",
+      type: "destroyer",
     },
     {
       size: 2,
       name: "Patrol Boat",
       imageUrl: patrolBoatImage,
-      className: "patrol-boat",
+      type: "patrol-boat",
     },
   ],
 } as const;
