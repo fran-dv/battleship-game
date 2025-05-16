@@ -2,16 +2,29 @@ import {
   CellState,
   type ComputerPlayer,
   type Coordinates,
+  type PlacedShip,
   type Player,
+  type Ship,
 } from "@/core";
 import { generateDiv } from "@fran-dv/ui-components";
 import styles from "./gameboard.module.css";
 import { DataClickAttrs } from "@/ui";
+import { getShipImage } from "@/utilities/ship-image";
 
 export interface GameboardHandlers {
   reRenderCell: (coords: Coordinates) => void;
   reRenderBoardWithShipsVisible: () => void;
   destroy: () => void;
+}
+
+type Orientation = "horizontal" | "vertical";
+
+interface ShipRenderData {
+  element: HTMLElement;
+  type: string;
+  length: number;
+  orientation: Orientation;
+  startCoords: Coordinates;
 }
 
 const isCorner = (
@@ -43,7 +56,6 @@ export const renderGameboard = (
   container: HTMLElement,
   shipsVisible: boolean = false,
 ): GameboardHandlers => {
-  console.log("rendering gameboard...");
   const board = generateDiv({ classes: [styles.gameboard] });
   for (let i = player.getGameboard().getSize() - 1; i >= 0; i--) {
     for (let j = 0; j < player.getGameboard().getSize(); j++) {
@@ -68,12 +80,6 @@ export const renderGameboard = (
           },
         ],
       });
-      const cellState = player.getGameboard().getCellState({ x: j, y: i });
-      if (shipsVisible && cellState === CellState.ship) {
-        const div = generateDiv();
-        div.textContent = "X";
-        cell.appendChild(div);
-      }
       const isACorner = isCorner(i, j, player);
       if (isACorner) cell.classList.add(isACorner);
       board.appendChild(cell);
@@ -87,8 +93,105 @@ export const renderGameboard = (
     );
   };
 
+  let cellSize = 0;
+  const ships: ShipRenderData[] = [];
+  let dragState: {
+    ship: ShipRenderData;
+    offset: Coordinates;
+  } | null = null;
+
+  // calculate cell size
+  const calculateCellSize = () => {
+    const tempCell = board.querySelector<HTMLElement>(`.${styles.cell}`)!;
+    cellSize = tempCell.offsetWidth;
+  };
+
+  const _addStylesToShip = (
+    cellDiv: HTMLDivElement,
+    coords: Coordinates,
+    shipLength: number,
+    isVertical: boolean,
+  ) => {
+    const { x, y } = coords;
+    // ensure that the ship has the corresponding class
+    cellDiv.classList.add(styles.ship);
+
+    let translateXValue: number = 0;
+    let translateYValue: number = 0;
+    let widthValue: number = 0;
+    let heightValue: number = 0;
+    if (!isVertical) {
+      translateXValue = x * cellSize;
+      translateYValue = (player.getGameboard().getSize() - 1 - y) * cellSize;
+      widthValue = cellSize * shipLength;
+      heightValue = cellSize;
+    } else {
+      translateXValue = x * cellSize;
+      translateYValue =
+        (player.getGameboard().getSize() - shipLength - y) * cellSize;
+      widthValue = cellSize;
+      heightValue = cellSize * shipLength;
+    }
+
+    cellDiv.style.setProperty("--translate-x", `${translateXValue}px`);
+    cellDiv.style.setProperty("--translate-y", `${translateYValue}px`);
+    cellDiv.style.setProperty("--width", `${widthValue}px`);
+    cellDiv.style.setProperty("--height", `${heightValue}px`);
+  };
+
+  const createShipElement = (ship: PlacedShip) => {
+    const element = generateDiv({ classes: [styles.ship] });
+    _addStylesToShip(
+      element,
+      ship.coords[0],
+      ship.ship.getLength(),
+      ship.isVertical,
+    );
+    const shipImage = getShipImage(ship.type, ship.isVertical);
+    element.style.backgroundImage = `url(${shipImage})`;
+    return element;
+  };
+
+  const updateShips = () => {
+    calculateCellSize();
+    ships.forEach((shipRenderData) => {
+      const { element, orientation, length, startCoords } = shipRenderData;
+      _addStylesToShip(
+        element as HTMLDivElement,
+        startCoords,
+        length,
+        orientation === "vertical",
+      );
+    });
+  };
+
+  if (shipsVisible) {
+    // wait that the gameboard is fully rendered
+    setTimeout(() => {
+      calculateCellSize();
+      player.getAllPlacedShips().forEach((ship) => {
+        const element = createShipElement(ship);
+        element.style.zIndex = "10";
+        board.appendChild(element);
+        ships.push({
+          element,
+          type: ship.type,
+          length: ship.ship.getLength(),
+          orientation: ship.isVertical ? "vertical" : "horizontal",
+          startCoords: ship.coords[0],
+        });
+      });
+      // drag and drop (lacks implementation)
+    }, 100);
+  }
+
+  // Make the ships responsive
+  const resizeObserver = new ResizeObserver(updateShips);
+  resizeObserver.observe(board);
+
   const reRenderBoardWithShipsVisible = () => {
-    console.log("rerendered board with ships visible");
+    destroy();
+    renderGameboard(player, container, true);
   };
 
   const destroy = () => {

@@ -20,6 +20,8 @@
   border-radius: 0.5rem;
   border: 0.5px solid var(--neutral-clr-500);
   box-shadow: 0.5rem 0.5rem 1rem var(--neutral-clr-900);
+  position: relative;
+  touch-action: none;
 }
 
 .cell {
@@ -29,6 +31,31 @@
   flex: 1;
   height: auto;
   border: 0.5px solid var(--neutral-clr-500);
+}
+
+.ship {
+  --translate-x: 0;
+  --translate-y: 0;
+  --transform-value: translate(var(--translate-x), var(--translate-y));
+  --width: 0;
+  --height: 0;
+  width: var(--width);
+  height: var(--height);
+  transform: var(--transform-value);
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: move;
+  transition: transform 0.2s;
+  z-index: 10;
+  image-rendering: crisp-edges;
+}
+
+.ship-dragging {
+  opacity: 0.7;
+  z-index: 3;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
 }
 
 .cornerTopLeft {
