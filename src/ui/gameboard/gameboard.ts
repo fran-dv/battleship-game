@@ -139,7 +139,7 @@ export const renderGameboard = (
     cellDiv.style.setProperty("--height", `${heightValue}px`);
   };
 
-  const createShipElement = (ship: PlacedShip) => {
+  const _createShipElement = (ship: PlacedShip) => {
     const element = generateDiv({ classes: [styles.ship] });
     _addStylesToShip(
       element,
@@ -152,7 +152,7 @@ export const renderGameboard = (
     return element;
   };
 
-  const updateShips = () => {
+  const _updateShips = () => {
     calculateCellSize();
     ships.forEach((shipRenderData) => {
       const { element, orientation, length, startCoords } = shipRenderData;
@@ -165,12 +165,16 @@ export const renderGameboard = (
     });
   };
 
+  const _initDrag = () => {
+
+  }
+
   if (shipsVisible) {
     // wait that the gameboard is fully rendered
     setTimeout(() => {
       calculateCellSize();
       player.getAllPlacedShips().forEach((ship) => {
-        const element = createShipElement(ship);
+        const element = _createShipElement(ship);
         element.style.zIndex = "10";
         board.appendChild(element);
         ships.push({
@@ -186,7 +190,7 @@ export const renderGameboard = (
   }
 
   // Make the ships responsive
-  const resizeObserver = new ResizeObserver(updateShips);
+  const resizeObserver = new ResizeObserver(_updateShips);
   resizeObserver.observe(board);
 
   const reRenderBoardWithShipsVisible = () => {
