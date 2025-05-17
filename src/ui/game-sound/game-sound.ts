@@ -1,4 +1,9 @@
 import { CellState, type CellStateType } from "@/core";
+import bgMusic from "@/assets/audio/bg-music.mp3";
+import clickSound from "@/assets/audio/press-button.mp3";
+import hitSound from "@/assets/audio/hit.mp3";
+import missSound from "@/assets/audio/miss.mp3";
+import sunkSound from "@/assets/audio/sunk.mp3";
 
 interface SoundManagerType {
   playBackgroundMusic: () => void;
@@ -10,17 +15,17 @@ interface SoundManagerType {
 }
 
 export const SoundManager = ((parent: HTMLElement): SoundManagerType => {
-  const backgroundMusic = new Audio("/src/assets/audio/bg-music.mp3");
+  const backgroundMusic = new Audio(bgMusic);
   backgroundMusic.loop = true;
   backgroundMusic.volume = 0.3;
   backgroundMusic.preload = "auto";
-  const clickSoundEffect = new Audio("/src/assets/audio/press-button.mp3");
+  const clickSoundEffect = new Audio(clickSound);
   clickSoundEffect.preload = "auto";
 
   const soundPaths = {
-    hit: "/src/assets/audio/hit.mp3",
-    miss: "/src/assets/audio/miss.mp3",
-    sunk: "/src/assets/audio/sunk.mp3",
+    hit: hitSound,
+    miss: missSound,
+    sunk: sunkSound,
   };
 
   const playSound = (path: string, volume = 0.5) => {
