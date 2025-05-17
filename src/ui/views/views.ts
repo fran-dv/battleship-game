@@ -1,4 +1,4 @@
-import type { GameSession } from "@/core";
+import type { GameSession, Player } from "@/core";
 import type {
   GameSessionView,
   HomeHandlers,
@@ -6,6 +6,7 @@ import type {
   ShipPlacementView,
 } from "@/ui";
 import {
+  Footer,
   renderGameSessionView,
   renderHomeView,
   renderLauncherView,
@@ -18,6 +19,8 @@ export interface ViewHandlers {
   clickOnOnePlayerButton: (gameSession: GameSession) => void;
   clickOnTwoPlayersButton: (gameSession: GameSession) => void;
   loadGameSessionView: (parent: HTMLElement, gameSession: GameSession) => void;
+  executeAttack: (cellDiv: HTMLDivElement, gameSession: GameSession) => void;
+  announceWinnerAndButton: (player: Player) => void;
 }
 
 type ViewType =
@@ -77,11 +80,33 @@ export const initViews = (parent: HTMLElement): ViewHandlers => {
     );
   };
 
+  const announceWinnerAndButton = (player: Player) => {
+    Footer?.setMessage(`${player.getName()} won the game!`);
+    Footer?.showPlayAgainButton();
+  };
+
+  const executeAttack = (cellDiv: HTMLDivElement, gameSession: GameSession) => {
+    if (!("executeAttack" in currentView)) {
+      console.error("executeAttack not found in current view");
+      return;
+    }
+    if (gameSession.getWinner()) {
+      return;
+    }
+    (currentView as GameSessionView).executeAttack(cellDiv);
+    if (gameSession.getWinner()) {
+      announceWinnerAndButton(gameSession.getWinner()!);
+      return;
+    }
+  };
+
   return {
     loadLauncherView,
     loadHomeView,
     clickOnOnePlayerButton,
     clickOnTwoPlayersButton,
     loadGameSessionView,
+    executeAttack,
+    announceWinnerAndButton,
   };
 };

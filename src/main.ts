@@ -16,6 +16,11 @@ main.appendChild(parent);
 const Views = initViews(parent);
 let CurrentGameSession: GameSession | null = null;
 
+const errorAndReturnHome = (msg: string) => {
+  console.error(msg);
+  Views.loadHomeView();
+};
+
 const clickHandler = (e: MouseEvent) => {
   const elem: HTMLElement | null = (e.target as HTMLElement).closest(
     "[data-click]",
@@ -45,11 +50,17 @@ const clickHandler = (e: MouseEvent) => {
       break;
     case DataClickAttrs.StartGame:
       if (!CurrentGameSession) {
-        console.error("Active game session not found");
-        Views.loadHomeView();
+        errorAndReturnHome("Active game session not found");
         return;
       }
       Views.loadGameSessionView(parent, CurrentGameSession);
+      break;
+    case DataClickAttrs.Cell:
+      if (!CurrentGameSession) {
+        errorAndReturnHome("Active game session not found");
+        return;
+      }
+      Views.executeAttack(elem as HTMLDivElement, CurrentGameSession);
       break;
   }
 };
