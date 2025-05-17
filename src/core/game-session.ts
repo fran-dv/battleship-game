@@ -7,6 +7,7 @@ import {
   GameRules,
   type AttackInfo,
 } from "@/core";
+import { doWithDelay } from "@/utilities";
 
 type PlayerOrNull = Player | ComputerPlayer | null;
 type PlayersArray = Array<Player | ComputerPlayer>;
@@ -20,6 +21,7 @@ export interface GameSession {
   makeAttack: (
     coords: AttackCoordsOrNull,
     callSwitchTurn?: () => void,
+    reRenderCallback?: (coords: Coordinates, playerId: number) => void,
   ) => AttackCoordsOrNull;
   getPlayers: () => PlayersArray;
   getPlayerById: (id: number) => PlayerOrNull;
@@ -86,6 +88,10 @@ export const initGameSession = (
   const makeAttack = (
     coords: AttackCoordsOrNull = null,
     callSwitchTurn: () => void = () => {},
+    reRenderCallback: (
+      coords: Coordinates,
+      playerId: number,
+    ) => void = () => {},
   ): AttackCoordsOrNull => {
     if (getWinner()) {
       console.error("Game is over");
@@ -93,12 +99,16 @@ export const initGameSession = (
     }
     const attackedPlayer = playerInTurn === player1 ? player2 : player1;
 
-    const postAttackSteps = (valueToReturn: AttackCoordsOrNull) => {
+    const postAttackSteps = (
+      valueToReturn: AttackCoordsOrNull,
+      coordsToRerender: Coordinates,
+    ) => {
       const gameOver = checkIfGameIsOver();
+      reRenderCallback(coordsToRerender, attackedPlayer.getId());
       switchTurn();
       callSwitchTurn();
       if (!gameOver && playerInTurn.getId() === computerPlayerId) {
-        makeAttack(null, callSwitchTurn);
+        makeAttack(null, callSwitchTurn, reRenderCallback);
       }
       return valueToReturn;
     };
@@ -108,8 +118,14 @@ export const initGameSession = (
       "attackToEnemy" in playerInTurn
     ) {
       // if attacker is computer
-      const result = playerInTurn.attackToEnemy();
-      postAttackSteps((result as AttackInfo).coords);
+      doWithDelay(() => {
+        const result = (playerInTurn as ComputerPlayer).attackToEnemy();
+        return postAttackSteps(
+          (result as AttackInfo).coords,
+          (result as AttackInfo).coords,
+        );
+      }, 2000);
+      return null;
     }
     if (!coords && gameMode === GameRules.gameModes.multiPlayer) {
       console.error("Coordinates to attack are required in two players mode");
@@ -117,7 +133,7 @@ export const initGameSession = (
     }
 
     attackedPlayer.receiveAttack(coords as Coordinates);
-    return postAttackSteps(null);
+    return postAttackSteps(null, coords as Coordinates);
   };
 
   const getPlayers = (): PlayersArray => [player1, player2];
