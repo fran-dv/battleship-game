@@ -1,4 +1,4 @@
-import type { GameSession } from "@/core";
+import { CellState, type Coordinates, type GameSession } from "@/core";
 import { generateDiv } from "@fran-dv/ui-components";
 import styles from "./game-session.module.css";
 import { Footer, renderGameboard, type GameboardHandlers } from "@/ui";
@@ -63,6 +63,16 @@ export const renderGameSessionView = (
     });
   };
 
+  const resetTurnIndications = () => {
+    boardsContainers.forEach((boardContainer) => {
+      const boardTitle: HTMLHeadingElement | null =
+        boardContainer.querySelector(`.${styles.boardTitle}`);
+      if (boardTitle) {
+        boardTitle.classList.remove(styles.inTurn);
+      }
+    });
+  };
+
   boardsContainers.forEach((boardContainer, i) => {
     const boardLegends = document.createElement("div");
     boardLegends.classList.add(styles.boardLegendsContainer);
@@ -96,9 +106,29 @@ export const renderGameSessionView = (
     if (playerId === gameSession.getPlayerInTurn().getId()) {
       return;
     }
+    const cellAttackedState = gameSession
+      .getPlayerById(playerId)
+      ?.getGameboard()
+      .getCellState({ x, y });
+    if (
+      cellAttackedState !== CellState.empty &&
+      cellAttackedState !== CellState.ship
+    ) {
+      return;
+    }
 
-    gameSession.makeAttack({ x, y }, setInTurnIndications);
-    boards[playerId].reRenderCell({ x, y });
+    const reRenderCellAfterAttack = (coords: Coordinates, playerId: number) => {
+      boards[playerId].reRenderCell(coords);
+    };
+
+    gameSession.makeAttack(
+      { x, y },
+      setInTurnIndications,
+      reRenderCellAfterAttack,
+    );
+    if (gameSession.getWinner()) {
+      resetTurnIndications();
+    }
   };
 
   const destroy = () => {
