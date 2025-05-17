@@ -14,7 +14,7 @@ test("get gameboard", () => {
 test("place ship", () => {
   const player = newPlayer("Player");
   const coords = { x: 0, y: 0 };
-  player.placeShip(newShip(2), coords, true);
+  player.placeShip(newShip(2), coords, true, "patrol-boat");
   expect(player.getGameboard().getCellState({ x: 0, y: 0 })).toBe(
     CellState.ship,
   );
@@ -26,14 +26,14 @@ test("place ship", () => {
 test("receive attack and hit a ship", () => {
   const player = newPlayer("Player");
   const coords = { x: 0, y: 0 };
-  player.placeShip(newShip(2), coords, false);
+  player.placeShip(newShip(2), coords, false, "patrol-boat");
   expect(player.receiveAttack(coords)).toBe(CellState.hit);
 });
 
 test("receive attack and sink a ship", () => {
   const player = newPlayer("Player");
   const coords = { x: 0, y: 0 };
-  player.placeShip(newShip(1), coords, false);
+  player.placeShip(newShip(1), coords, false, "patrol-boat");
   expect(player.receiveAttack(coords)).toBe(CellState.sunk);
 });
 

@@ -3,7 +3,6 @@ import {
   newComputerPlayer,
   newPlayer,
   initGameSession,
-  newShip,
   type Player,
 } from "@/core";
 
