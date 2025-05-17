@@ -6,6 +6,7 @@ import {
   type Player,
   GameRules,
   type AttackInfo,
+  type CellStateType,
 } from "@/core";
 import { doWithDelay } from "@/utilities";
 
@@ -22,6 +23,7 @@ export interface GameSession {
     coords: AttackCoordsOrNull,
     callSwitchTurn?: () => void,
     reRenderCallback?: (coords: Coordinates, playerId: number) => void,
+    playSoundCallback?: (cellState: CellStateType) => void,
   ) => AttackCoordsOrNull;
   getPlayers: () => PlayersArray;
   getPlayerById: (id: number) => PlayerOrNull;
@@ -85,13 +87,15 @@ export const initGameSession = (
   // makeAttack calls automatically to the attack of the computer player in single mode
   // It returns null if the attack have been made by a real player
   // and if the attack have been made by the computer it returns the coords of the attack
+  const defaultCallback = () => {};
   const makeAttack = (
     coords: AttackCoordsOrNull = null,
     callSwitchTurn: () => void = () => {},
     reRenderCallback: (
       coords: Coordinates,
       playerId: number,
-    ) => void = () => {},
+    ) => void = defaultCallback,
+    playSoundCallback: (cellState: CellStateType) => void = defaultCallback,
   ): AttackCoordsOrNull => {
     if (getWinner()) {
       console.error("Game is over");
@@ -104,11 +108,14 @@ export const initGameSession = (
       coordsToRerender: Coordinates,
     ) => {
       const gameOver = checkIfGameIsOver();
+      playSoundCallback(
+        attackedPlayer.getGameboard().getCellState(coordsToRerender),
+      );
       reRenderCallback(coordsToRerender, attackedPlayer.getId());
       switchTurn();
       callSwitchTurn();
       if (!gameOver && playerInTurn.getId() === computerPlayerId) {
-        makeAttack(null, callSwitchTurn, reRenderCallback);
+        makeAttack(null, callSwitchTurn, reRenderCallback, playSoundCallback);
       }
       return valueToReturn;
     };

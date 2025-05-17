@@ -1,7 +1,17 @@
-import { CellState, type Coordinates, type GameSession } from "@/core";
+import {
+  CellState,
+  type CellStateType,
+  type Coordinates,
+  type GameSession,
+} from "@/core";
 import { generateDiv } from "@fran-dv/ui-components";
 import styles from "./game-session.module.css";
-import { Footer, renderGameboard, type GameboardHandlers } from "@/ui";
+import {
+  Footer,
+  renderGameboard,
+  SoundManager,
+  type GameboardHandlers,
+} from "@/ui";
 import { doWithDelay } from "@/utilities";
 
 export interface GameSessionView {
@@ -83,11 +93,7 @@ export const renderGameSessionView = (
       [i].getId()
       .toString();
     boardTitle.textContent = gameSession.getPlayers()[i].getName();
-    const sunkShipsCounter = document.createElement("div");
-    sunkShipsCounter.classList.add(styles.sunkShipsCounter);
-    sunkShipsCounter.textContent = "(here sunk ships counter)";
     boardLegends.appendChild(boardTitle);
-    boardLegends.appendChild(sunkShipsCounter);
     doWithDelay(() => {
       boardContainer.appendChild(boardLegends);
       parent.appendChild(boardContainer);
@@ -121,10 +127,15 @@ export const renderGameSessionView = (
       boards[playerId].reRenderCell(coords);
     };
 
+    const playSound = (cellStatus: CellStateType) => {
+      SoundManager.playCellSound(cellStatus);
+    };
+
     gameSession.makeAttack(
       { x, y },
       setInTurnIndications,
       reRenderCellAfterAttack,
+      playSound,
     );
     if (gameSession.getWinner()) {
       resetTurnIndications();
