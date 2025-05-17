@@ -31,6 +31,23 @@
   flex: 1;
   height: auto;
   border: 0.5px solid var(--neutral-clr-500);
+  cursor: pointer;
+
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.hit {
+  background-image: url("/src/assets/image/cell/hit.png");
+}
+
+.miss {
+  background-image: url("/src/assets/image/cell/miss.png");
+}
+
+.sunk {
+  background-image: url("/src/assets/image/cell/sunk.png");
 }
 
 .ship {

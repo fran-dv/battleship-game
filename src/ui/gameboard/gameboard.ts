@@ -1,4 +1,5 @@
 import {
+  CellState,
   type ComputerPlayer,
   type Coordinates,
   type PlacedShip,
@@ -87,9 +88,39 @@ export const renderGameboard = (
 
   container.appendChild(board);
   const reRenderCell = ({ x, y }: Coordinates) => {
-    console.log(
-      `rerendered cell {${x}, ${y}} with status ${player.getGameboard().getCellState({ x, y })}`,
-    );
+    const cellSelector = ({ x, y }: Coordinates) =>
+      `.${styles.cell}[data-x="${x}"][data-y="${y}"]`;
+    const cell = board.querySelector<HTMLElement>(cellSelector({ x, y }));
+    if (!cell) {
+      console.error(`Cell {${x}, ${y}} not found`);
+      return;
+    }
+    const removeAllStateClasses = () => {
+      cell.classList.remove(styles.hit, styles.miss, styles.sunk);
+    };
+    removeAllStateClasses();
+    const cellStatus = player.getGameboard().getCellState({ x, y });
+    if (cellStatus === CellState.hit || cellStatus === CellState.miss) {
+      cell.classList.add(styles[cellStatus]);
+      return;
+    }
+
+    if (cellStatus === CellState.sunk) {
+      const ship = player.getGameboard().getShipByCoords({ x, y });
+      if (!ship) {
+        console.error(`Ship not found at cell {${x}, ${y}}`);
+        return;
+      }
+      removeAllStateClasses();
+      ship.coords.forEach((coord) => {
+        const cell = board.querySelector<HTMLElement>(cellSelector(coord));
+        if (!cell) {
+          console.error(`Cell {${coord.x}, ${coord.y}} not found`);
+          return;
+        }
+        cell.classList.add(styles[cellStatus]);
+      });
+    }
   };
 
   let cellSize = 0;
